@@ -1,0 +1,43 @@
+#!/bin/sh
+
+mount -t devtmpfs none /dev
+mount -t proc none /proc
+mount -t sysfs none /sys
+
+/sbin/mdev -s
+
+chown -R root.root / > /dev/null 2>&1
+chown flitbip.flitbip /home/flitbip
+
+HOME=/home/flitbip
+ENV=$HOME/.profile; export ENV
+
+cat <<EOF
+                                                   Midnight Sun CTF presents...
+
+                 ███████╗     ██╗██╗████████╗ ██████╗██╗██████╗ 
+                 ╚════██║     ██║██║╚══██╔══╝██╔══██║██║██╔══██╗
+                   █████║     ██║██║   ██║   ╚██████║██║██████╔╝
+                   ╚══██║     ██║██║   ██║   ██╔══██║██║██╔═══╝ 
+                      ██║███████║██║   ██║   ╚██████║██║██║     
+                      ╚═╝╚══════╝╚═╝   ╚═╝    ╚═════╝╚═╝╚═╝     
+══════════════════════════════════════════════════════════════════════════════╗
+EOF
+
+cat /src/flitbip.c
+
+cat <<EOF
+══════════════════════════════════════════════════════════════════════════════╝
+EOF
+
+setsid cttyhack setuidgid 1000 /bin/sh
+#setsid cttyhack setuidgid 0 /bin/sh
+
+echo -ne "\n"
+echo "Bye!"
+
+umount /dev
+umount /proc
+umount /sys
+
+poweroff -d 0 -f
